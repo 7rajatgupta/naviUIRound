@@ -14,6 +14,7 @@ function App() {
       if (c.id === comment.id) {
         c.threads = comment.threads;
       }
+      return true;
     });
     setComments(updatedComments);
   }

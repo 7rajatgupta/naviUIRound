@@ -3,7 +3,7 @@ import { Flex, Heading } from '@chakra-ui/react';
 import CommentWidget from './components/CommentWidget';
 import { useState } from 'react';
 import ShowComments from './components/ShowComments';
-import { getNewCommentDS } from './utils/commentHelper';
+import { deleteRecursively, getNewCommentDS } from './utils/commentHelper';
 
 function App() {
   const [comments, setComments] = useState([]);
@@ -16,6 +16,10 @@ function App() {
       }
       return true;
     });
+    setComments(updatedComments);
+  }
+  function deleteCommentWithId(id) {
+    const updatedComments = deleteRecursively(comments, id);
     setComments(updatedComments);
   }
 
@@ -33,7 +37,14 @@ function App() {
         <CommentWidget add={addTopLevelComment} />
         <Flex direction={'column'}>
           {comments?.map((c, id) => {
-            return <ShowComments comment={c} key={id} set={modifyComment} />;
+            return (
+              <ShowComments
+                comment={c}
+                key={id}
+                set={modifyComment}
+                deleteComment={deleteCommentWithId}
+              />
+            );
           })}
         </Flex>
       </Flex>

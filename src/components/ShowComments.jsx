@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { getNewCommentDS } from '../utils/commentHelper';
 let threadlevel = 0;
 
-const ShowComments = ({ comment, set, level }) => {
+const ShowComments = ({ comment, set, level, deleteComment }) => {
   const [isReply, setIsReply] = useState(false);
   const [replyText, setReplyText] = useState('');
 
@@ -15,12 +15,15 @@ const ShowComments = ({ comment, set, level }) => {
     setReplyText('');
     setIsReply(false);
   }
-  // function deleteCommentFromId(id) {
-  //   let updatedComments = comment.threads.filter((c) => c.id !== id);
-  // }
   const threadedComments = (comment.threads || []).map((c, id) => {
     return (
-      <ShowComments comment={c} set={set} key={id} level={++threadlevel} />
+      <ShowComments
+        comment={c}
+        set={set}
+        key={id}
+        level={++threadlevel}
+        deleteComment={deleteComment}
+      />
     );
   });
   return (
@@ -31,7 +34,7 @@ const ShowComments = ({ comment, set, level }) => {
           colorScheme={'red'}
           variant={'outline'}
           size={'xs'}
-          onClick={() => console.log(`Delete comment with id : ${comment.id}`)}
+          onClick={() => deleteComment(comment.id)}
         >
           Delete
         </Button>

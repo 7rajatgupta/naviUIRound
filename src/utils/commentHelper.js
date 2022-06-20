@@ -7,3 +7,15 @@ export function getNewCommentDS(text) {
     threads: [],
   };
 }
+export function deleteRecursively(comments, id) {
+  return comments
+    .map((c) => {
+      return { ...c };
+    })
+    .filter((c) => {
+      if ('threads' in c) {
+        c.threads = deleteRecursively(c.threads, id);
+      }
+      return c.id !== id;
+    });
+}
